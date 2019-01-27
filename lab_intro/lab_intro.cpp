@@ -64,14 +64,14 @@ PNG createSpotlight(PNG image, int centerX, int centerY) {
   for (unsigned x = 0; x < image.width(); x++) {
     for (unsigned y = 0; y < image.height(); y++) {
       HSLAPixel & pixel = image.getPixel(x, y);
-      double dis = sqrt(pow((x-centerX)*1.0,2) +  pow((y-centerY)*1.0,2));
-      if (dis <= 200)
+      double distance = sqrt(pow(((int)x-centerX),2) +  pow(((int)y-centerY),2));
+      if (distance <= 160)
       {
-        pixel.l= 1-(dis * 5.0 / 1000);
+        pixel.l= pixel.l*(1-(distance * 5/ 1000));
       }
       else
       {
-        pixel.l=0.0;
+        pixel.l=0.2*pixel.l;
       }
       // `pixel` is a pointer to the memory stored inside of the PNG `image`,
       // which means you're changing the image directly.  No need to `set`
@@ -130,8 +130,8 @@ PNG illinify(PNG image) {
 * @return The watermarked image.
 **/
 PNG watermark(PNG firstImage, PNG secondImage) {
-  for (unsigned x = 0; x < image.width(); x++) {
-    for (unsigned y = 0; y < image.height(); y++) {
+  for (unsigned x = 0; x < firstImage.width(); x++) {
+    for (unsigned y = 0; y < firstImage.height(); y++) {
       HSLAPixel & pixel = firstImage.getPixel(x, y);
       HSLAPixel & pixel2 = secondImage.getPixel(x, y);
       if(pixel2.l==1.0)
