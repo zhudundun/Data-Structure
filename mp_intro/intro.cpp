@@ -34,20 +34,20 @@ void rotate(std::string inputFile, std::string outputFile) {
 }
 
 cs225::PNG myArt(unsigned int width, unsigned int height) {
-  PNG image=PNG(width, height);
+  PNG image(width, height);
 
   for (unsigned y = 1; y < height; y++) {
       for (unsigned x = 1;  x < width; x++) {
   HSLAPixel &pixel=image.getPixel(x,y);
   //pixel=HSLAPixel();
-  if (x<200)
+  if (x<(1.0/3.0)*width)
   {
     pixel.h=11;
-    pixel.a=1.0;
+    pixel.a=0.0;
     pixel.l=1.0;
     pixel.s=0.0;
   }
-    else if (x>(2/3)*width)
+    else if (x>(2.0/3.0)*width)
   {
   // TODO: Part 3
   pixel.h=216;
@@ -55,9 +55,10 @@ cs225::PNG myArt(unsigned int width, unsigned int height) {
   pixel.l=1.0;
   pixel.s=0.0;
    }
-   else {
+   else
+   {
      pixel.h=153;
-     pixel.a=1.0;
+     pixel.a=0.5;
      pixel.l=1.0;
      pixel.s=0.0;
    }
