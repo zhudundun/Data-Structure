@@ -17,11 +17,11 @@ void rotate(std::string inputFile, std::string outputFile) {
   // Create out.png
   PNG* output=new PNG(width, height);
   // Go over the whole image, and if a pixel differs from that to its upper
-  for (unsigned y = 1; y < height; y++) {
-      for (unsigned x = 1;  x < width; x++) {
+  for (unsigned y = 0; y < height; y++) {
+      for (unsigned x = 0;  x < width; x++) {
           // Calculate the pixel difference
           HSLAPixel* ori = &(original->getPixel(x,y));
-  	      HSLAPixel* out = &(output->getPixel(width-x,height-y));
+  	      HSLAPixel* out = &(output->getPixel(width-x-1,height-y-1));
   	      *out = *ori;
       }
   }
@@ -42,25 +42,25 @@ cs225::PNG myArt(unsigned int width, unsigned int height) {
   //pixel=HSLAPixel();
   if (x<(1.0/3.0)*width)
   {
-    pixel.h=11;
-    pixel.a=0.0;
-    pixel.l=1.0;
-    pixel.s=0.0;
+    pixel.h=162;
+    pixel.a=1.0;
+    pixel.l=0.5;
+    pixel.s=1.0;
   }
     else if (x>(2.0/3.0)*width)
   {
   // TODO: Part 3
-  pixel.h=216;
+  pixel.h=286;
   pixel.a=1.0;
-  pixel.l=1.0;
-  pixel.s=0.0;
+  pixel.l=0.5;
+  pixel.s=1.0;
    }
    else
    {
-     pixel.h=153;
-     pixel.a=0.5;
-     pixel.l=1.0;
-     pixel.s=0.0;
+     pixel.h=244;
+     pixel.a=1.0;
+     pixel.l=0.5;
+     pixel.s=1.0;
    }
 }
 }
