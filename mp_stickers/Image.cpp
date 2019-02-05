@@ -143,8 +143,8 @@ using cs225::Image;
 
 
   void Image::scale(unsigned w, unsigned h){
-    double widthRatio=w/width();
-    double heightRatio=h/height();
+    double widthRatio=w*1.0/width()*1.0;
+    double heightRatio=h*1.0/height()*1.0;
     if (widthRatio<heightRatio){
       scale(widthRatio);
     }
