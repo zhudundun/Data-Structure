@@ -6,12 +6,12 @@
 #include "Image.h"
 
 namespace cs225{
-  class stickerSheet{
+  class StickerSheet{
   public:
- 	stickerSheet (const Image &pic, unsigned max);
-  ~stickerSheet ();
-  stickerSheet (const stickerSheet &other);
-  const stickerSheet & 	operator= (const stickerSheet &other);
+ 	StickerSheet (const Image &pic, unsigned max);
+  ~StickerSheet ();
+  StickerSheet (const StickerSheet &other);
+  const StickerSheet & 	operator= (const StickerSheet &other);
   void 	changeMaxStickers (unsigned max);
   int 	addSticker (Image &sticker, unsigned x, unsigned y);
   bool 	translate (unsigned index, unsigned x, unsigned y);
@@ -27,7 +27,7 @@ private:
   int* yPos;
   int* count;
   void _destroy();
-  void _copy(const stickerSheet& other);
+  void _copy(const StickerSheet& other);
 
   };
 }
