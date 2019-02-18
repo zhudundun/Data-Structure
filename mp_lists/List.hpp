@@ -4,7 +4,7 @@
  */
 
 template <class T>
-List<T>::List() { 
+List<T>::List() {
   // @TODO: graded in MP3.1
     ListNode* head_ = NULL;
     ListNode* tail_ = NULL;
@@ -34,9 +34,24 @@ typename List<T>::ListIterator List<T>::end() const {
  * Destroys all dynamically allocated memory associated with the current
  * List class.
  */
+ List<T>::~List()
+ {
+     clear();
+ }
+
 template <typename T>
 void List<T>::_destroy() {
   /// @todo Graded in MP3.1
+  ListNode* temp;
+  while(head!=NULL){
+    temp=head->next;
+    delete head;
+    head=temp;
+  }
+  head=NULL;
+  tail=NULL;
+  temp=NULL;
+  length=0;
 }
 
 /**
@@ -51,14 +66,14 @@ void List<T>::insertFront(T const & ndata) {
   ListNode * newNode = new ListNode(ndata);
   newNode -> next = head_;
   newNode -> prev = NULL;
-  
+
   if (head_ != NULL) {
     head_ -> prev = newNode;
   }
   if (tail_ == NULL) {
     tail_ = newNode;
   }
-  
+
 
   length_++;
 

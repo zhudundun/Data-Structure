@@ -3,7 +3,7 @@
  * This is where you will implement the required functions for the
  * stacks and queues portion of the lab.
  */
-
+#include <iostream>
 namespace QuackFun {
 
 /**
@@ -29,9 +29,22 @@ namespace QuackFun {
 template <typename T>
 T sum(stack<T>& s)
 {
+  T temp;
+
+    T output=T();
+    if(s.empty()){
+      return 0;
+    }
+     if(!s.empty()){
+     T temp=s.top();
+     s.pop();
+     output=sum(s)+temp;
 
     // Your code here
-    return T(); // stub return value (0 for primitive types). Change this!
+      s.push(temp);
+    }
+
+    return output; // stub return value (0 for primitive types). Change this!
                 // Note: T() is the default value for objects, and 0 for
                 // primitive types
 }
@@ -55,10 +68,35 @@ T sum(stack<T>& s)
  */
 bool isBalanced(queue<char> input)
 {
+    stack<char> temp;
+    if (input.empty()){
+      return true;
+    }
+    while(!input.empty()){
+      char A=input.front();
+      if(A=='['){
+        temp.push(A);
 
+
+      }
+      if (A==']'){
+        if (temp.empty()){
+          return false;
+        }
+        else{
+
+          temp.pop();
+        }
+      }
+     input.pop();
+    }
+    if (temp.empty()){
+      return true;
+    }
     // @TODO: Make less optimistic
-    return true;
+    return false;
 }
+//std::cout<<"[)[([ )][]]]"<<<std::endl;
 
 /**
  * Reverses even sized blocks of items in the queue. Blocks start at size
@@ -79,6 +117,39 @@ template <typename T>
 void scramble(queue<T>& q)
 {
     stack<T> s;
+    queue<T> newq;
+    int count=0;
+    while(!q.empty()){
+      count++;
+      if (count%2==0){
+        for (int i=0;i<count;i++){
+          if(q.empty()){
+            break;
+          }
+          s.push(q.front());
+          q.pop();
+        }
+        while(!s.empty()){
+          newq.push(s.top());
+          s.pop();
+        }
+
+      }
+      else{
+        for(int i=0;i<count;i++){
+          if(q.empty()){
+            break;
+          }
+          newq.push(q.front());
+          q.pop();
+        }
+      }
+
+    }
+    while(!newq.empty()){
+      q.push(newq.front());
+      newq.pop();
+    }
     // optional: queue<T> q2;
 
     // Your code here
@@ -110,12 +181,27 @@ template <typename T>
 bool verifySame(stack<T>& s, queue<T>& q)
 {
     bool retval = true; // optional
-    // T temp1; // rename me
-    // T temp2; // rename :)
+    T tempS; // rename me
+    T tempQ; // rename :)
+    if(s.empty()){
+      return true;
+    }
+    tempS=s.top();
+    s.pop();
+    if(!s.empty()){
+      retval=verifySame(s,q);
+    }
+    s.push(tempS);
+    tempQ=q.front();
+    if(tempQ!=tempS){
+      retval=false;
+    }
+    q.pop();
+    q.push(tempQ);
 
     // Your code here
 
-    return retval;
-}
+     return retval;
+ }
 
 }
