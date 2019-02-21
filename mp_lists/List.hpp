@@ -49,7 +49,6 @@ typename List<T>::ListIterator List<T>::end() const {
 template <typename T>
 void List<T>::_destroy() {
   /// @todo Graded in MP3.1
-length_=0;
   ListNode* temp;
   temp=head_;
   while(temp!=NULL){
@@ -60,6 +59,7 @@ length_=0;
   }
   head_=NULL;
   tail_=NULL;
+  length_=0;
 
 }
 
@@ -179,10 +179,11 @@ ListNode* temp=head_->next;
 ListNode* skip=temp;
 while(temp!=NULL && temp!=tail_){
   if(temp->next!=NULL){
-    (temp->next)->prev=temp->prev;
+    temp->next->prev=temp->prev;
     skip=temp->next;
+    temp->prev->next=temp->next;
   }
-  (temp->prev)->next=temp->next;
+
   tail_->next=temp;
   temp->next=NULL;
   temp->prev=tail_;
