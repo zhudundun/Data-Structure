@@ -40,11 +40,7 @@ typename List<T>::ListIterator List<T>::end() const {
 
 
 
- template <typename T>
- List<T>::~List()
- {
-   _destroy();
- }
+ 
 
 template <typename T>
 void List<T>::_destroy() {

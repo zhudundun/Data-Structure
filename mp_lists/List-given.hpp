@@ -64,7 +64,11 @@ void List<T>::_copy(List<T> const& other) {
  * memory does not leak on destruction of a list.
  */
 
-
+ template <typename T>
+ List<T>::~List()
+ {
+   _destroy();
+ }
 
 /**
  * Splits the given list into two parts by dividing it at the splitPoint.
