@@ -6,6 +6,8 @@
 #include "TreeTraversals/InorderTraversal.h"
 #include <iostream>
 
+using namespace std;
+
 /**
  * @return The height of the binary tree. Recall that the height of a binary
  *  tree is just the length of the longest path from the root to a leaf, and
@@ -47,7 +49,7 @@ void BinaryTree<T>::printLeftToRight() const
     printLeftToRight(root);
 
     // Finish the line
-    std::cout << std::endl;
+    std::cout<<std::endl;
 }
 
 /**
@@ -79,6 +81,21 @@ void BinaryTree<T>::printLeftToRight(const Node* subRoot) const
 void BinaryTree<T>::mirror()
 {
     //your code here
+
+mirror(root);
+
+}
+
+template <typename T>
+void BinaryTree<T>::mirror(Node* root) const{
+  if (root==NULL) return;
+  Node* temp;
+  mirror(root->left);
+  mirror(root->right);
+  temp=root->left;
+  root->left=root->right;
+  root->right=temp;
+
 }
 
 
@@ -92,8 +109,58 @@ template <typename T>
 bool BinaryTree<T>::isOrderedIterative() const
 {
     // your code here
-    return false;
+    std::stack<T> s;
+    int large_value;
+    InorderTraversal<int> iot(this->getRoot());
+    for(TreeTraversal<int>::Iterator it=iot.begin();it!=iot.end();++it){
+      s.push((*it)->elem);
+    }
+    if(!s.empty()){
+      large_value=s.top();
+      s.pop();
+    }
+    while(!s.empty()){
+      if(large_value<s.top()){
+        return false;
+      }
+      large_value=s.top();
+      s.pop();
+    }
+return true;
+
 }
+
+template <typename T>
+bool BinaryTree<T>::isOrderedIterative(Node* root) const
+{
+    // your code here
+    bool orderl=true;
+    bool orderr=true;
+    if (root==NULL) return true;
+    while(root->left!=NULL){
+    if(root->left<root) orderl=true;
+    else {
+      orderl=false;
+      break;
+    }
+      root=root->left;
+  }
+  while(root->right!=NULL){
+    if(root->right>root) orderr=true;
+    else {
+      orderr=false;
+      break;
+    }
+    root=root->right;
+  }
+
+    if(orderl==true && orderr==true) return true;
+    else return false;
+
+
+}
+
+
 
 /**
  * isOrdered() function recursive version
@@ -105,9 +172,62 @@ template <typename T>
 bool BinaryTree<T>::isOrderedRecursive() const
 {
     // your code here
-    return false;
+    return isOrderedRecursive(root);
+
 }
 
+template <typename T>
+bool BinaryTree<T>::isOrderedRecursive(Node* root) const
+{
+    // your code here
+    if(root==NULL) return true;// your code here
+    if(root->left==NULL && root->right==NULL) return true;// your code here
+    bool result=isOrderedRecursive(root->left) && isOrderedRecursive(root->right);
+    // std::cout << "roooot: " << root->elem << std::endl;
+    // std::cout << "Cur bool: " << result << std::endl;
+    if (result==false) return result;
+    if(root->left==NULL){
+    if(root->elem<Min(root->right)) return true;
+    else return false;
+  }
+  if(root->right==NULL){
+
+    // std::cout << "roooot: " << root->elem << std::endl;
+    // std::cout << "Max: " << Max(root->left) << std::endl;
+  if(root->elem>Max(root->left)) return true;
+  else return false;
+}
+
+// std::cout << "roooot 3: " << root->elem << std::endl;
+//   std::cout << "Min: " << Min(root->right) << std::endl;
+  if(root->elem>Max(root->left)&&root->elem<Min(root->right)) return true;
+  else return false;
+
+}
+
+template <typename T>
+int BinaryTree<T>::Max(Node* root) const{
+  InorderTraversal<int> tree(root);
+  int max=0;
+  for(TreeTraversal<int>::Iterator it=tree.begin();it!=tree.end();++it){
+    if((*it)->elem>max) max=(*it)->elem;
+  }
+return max;
+
+
+}
+
+template <typename T>
+int BinaryTree<T>::Min(Node* root) const{
+  InorderTraversal<int> tree(root);
+  int min=root->elem;
+  for(TreeTraversal<int>::Iterator it=tree.begin();it!=tree.end();++it){
+    if((*it)->elem<min) min=(*it)->elem;
+  }
+return min;
+
+
+}
 
 /**
  * creates vectors of all the possible paths from the root of the tree to any leaf
@@ -121,7 +241,40 @@ template <typename T>
 void BinaryTree<T>::getPaths(std::vector<std::vector<T>>& paths) const
 {
     // your code here
+     T array[1000];
+     int index=0;
+    Node* root=this->getRoot();
+getPaths( paths,array, index,root);
 }
+
+template <typename T>
+void BinaryTree<T>::getPaths(std::vector<std::vector<T>>& paths,  T array[], int index,Node* root) const
+{
+    // your code here
+if(root==NULL) return;
+else{
+array[index]=root->elem;
+index++;}
+if(root->left==NULL && root->right==NULL){
+  std::vector<T> store;
+
+  for( int i=0;i<index;i++) {
+    store.push_back(array[i]);
+    }
+
+  paths.push_back(store);
+
+}
+else{
+  getPaths( paths, array,index,root->left);
+  getPaths( paths, array,index,root->right);
+
+}
+index--;
+}
+
+
+
 
 
 /**
@@ -138,4 +291,3 @@ int BinaryTree<T>::sumDistances() const
     // your code here
     return -1;
 }
-

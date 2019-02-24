@@ -94,7 +94,7 @@ class BinaryTree
         /**
          * @return The root of the binary tree
          */
-        Node* getRoot() const;  
+        Node* getRoot() const;
 
         /**
          * This lab deals with the following six helper functions:
@@ -120,6 +120,7 @@ class BinaryTree
          *  (not creating a flipped copy).
          */
         void mirror();
+        void mirror(Node* root) const;
 
         /**
          * isOrdered() function iterative version
@@ -128,7 +129,7 @@ class BinaryTree
          *  criterion for a binary tree to be a binary search tree.
          */
         bool isOrderedIterative() const;
-
+        bool isOrderedIterative(Node* root) const;
         /**
          * isOrdered() function recursive version
          * @return True if an in-order traversal of the tree would produce a
@@ -136,6 +137,9 @@ class BinaryTree
          *  criterion for a binary tree to be a binary search tree.
          */
         bool isOrderedRecursive() const;
+        bool isOrderedRecursive(Node* root) const;
+        int Max(Node* root) const;
+        int Min(Node* root) const;
 
 
         /**
@@ -147,7 +151,7 @@ class BinaryTree
          * @param paths vector of vectors that contains path of nodes
          */
         void getPaths(std::vector<std::vector<T>>& paths) const;
-
+void getPaths(std::vector<std::vector<T>>& paths,T array[], int index,  Node* root) const;
         /**
          * Each node in a tree has a distance from the root node - the depth of that
          * node, or the number of edges along the path from that node to the root.

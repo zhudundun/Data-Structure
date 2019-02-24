@@ -40,7 +40,7 @@ typename List<T>::ListIterator List<T>::end() const {
 
 
 
- 
+
 
 template <typename T>
 void List<T>::_destroy() {
@@ -213,6 +213,25 @@ void List<T>::reverse() {
 template <typename T>
 void List<T>::reverse(ListNode *& startPoint, ListNode *& endPoint) {
   /// @todo Graded in MP3.2
+  ListNode* temp=NULL;
+  ListNode* current=startPoint;
+  ListNode* before=startPoint->prev;
+  ListNode* after=endPoint->next;
+  while(current!=after){
+    temp=current->prev;
+    current->prev=current->next;
+    current->next=temp;
+    current=current->prev;
+  }
+  if(temp!=NULL){
+    temp=endPoint;
+    endPoint=startPoint;
+    startPoint=temp;
+  }
+  endPoint->next=after;
+  if (after!=NULL) after->prev=endPoint;
+  startPoint->prev=before;
+  if (before!=NULL) before->next=startPoint;
 }
 
 /**
@@ -223,6 +242,26 @@ void List<T>::reverse(ListNode *& startPoint, ListNode *& endPoint) {
  */
 template <typename T>
 void List<T>::reverseNth(int n) {
+  if(head_==NULL || tail_==NULL || n<=0) return;
+  ListNode* startPoint=head_;
+  ListNode* endPoint=head_;
+  if(n>=size()) {
+    reverse();
+    return;
+  }
+  for(int i=1;i<n;i++){
+     if (endPoint->next!=NULL) endPoint=endPoint->next;
+  }
+  reverse(head_,endPoint);
+  while(endPoint->next!=NULL){
+    startPoint=endPoint->next;
+    for(int i=1;i<=n;i++){
+       if (endPoint->next!=NULL) endPoint=endPoint->next;
+    }
+    reverse(startPoint,endPoint);
+  }
+
+
   /// @todo Graded in MP3.2
 }
 
@@ -265,7 +304,63 @@ void List<T>::mergeWith(List<T> & otherList) {
 template <typename T>
 typename List<T>::ListNode * List<T>::merge(ListNode * first, ListNode* second) {
   /// @todo Graded in MP3.2
-  return NULL;
+  ListNode* f=first->next;
+  ListNode* s=second->next;
+  ListNode* r=NULL;
+  ListNode* result=NULL;
+
+  if(first->data<second->data){
+    result=first;
+    result->prev=NULL;
+    result->next=NULL;
+    r=result;
+    first=f;
+  }
+  else{
+    result=second;
+    result->prev=NULL;
+    result->next=NULL;
+    r=result;
+    second=s;
+
+  }
+  while(first!=NULL || second!=NULL){
+    if(first!=NULL && second!=NULL){
+      if(first->data<second->data){
+        first->prev=r;
+        r->next=first;
+        first=first->next;
+        r=r->next;
+      }
+      else{
+        second->prev=r;
+        r->next=second;
+        second=second->next;
+        r=r->next;
+
+      }
+    }
+    else if (first!=NULL){
+      if(first==r) first=first->next;
+      if(first==NULL) break;
+      first->prev=r;
+      r->next=first;
+      first=first->next;
+      r=r->next;
+
+    }
+    else{
+      if(second==r) second=second->next;
+      if(second==NULL) break;
+      second->prev=r;
+      r->next=second;
+      second=second->next;
+      r=r->next;
+
+
+    }
+  }
+  return result;
 }
 
 /**
@@ -282,5 +377,9 @@ typename List<T>::ListNode * List<T>::merge(ListNode * first, ListNode* second) 
 template <typename T>
 typename List<T>::ListNode* List<T>::mergesort(ListNode * start, int chainLength) {
   /// @todo Graded in MP3.2
-  return NULL;
+if(chainLength==1 || chainLength==0) return start;
+int len1=chainLength/2;
+int len2=chainLength-len1;
+ListNode* middle=split(start,len1);
+return merge(mergesort(start,len1),mergesort(middle,len2));
 }
