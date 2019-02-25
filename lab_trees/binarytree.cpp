@@ -289,5 +289,18 @@ template <typename T>
 int BinaryTree<T>::sumDistances() const
 {
     // your code here
-    return -1;
+    if (root==NULL)return -1;
+    return sumDistances(root,0);
+}
+
+template <typename T>
+int BinaryTree<T>::sumDistances(Node* root,int height) const
+{
+    // your code here
+    if (root->left==NULL && root->right==NULL)return height;
+
+    if(root->left==NULL) return height+sumDistances(root->right,height+1);
+    if(root->right==NULL) return height+sumDistances(root->left,height+1);
+
+    else return height+sumDistances(root->left,height+1)+sumDistances(root->right,height+1);
 }

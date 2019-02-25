@@ -259,11 +259,15 @@ void List<T>::reverseNth(int n) {
        if (endPoint->next!=NULL) endPoint=endPoint->next;
     }
     reverse(startPoint,endPoint);
-  }
+
+   }
+
+ }
+
 
 
   /// @todo Graded in MP3.2
-}
+
 
 
 /**

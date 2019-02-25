@@ -161,6 +161,7 @@ void getPaths(std::vector<std::vector<T>>& paths,T array[], int index,  Node* ro
          * @return The sum of the distances of all nodes to the root
          */
         int sumDistances() const;
+        int sumDistances(Node* root,int height) const;
 
         /**
          *  Uses vector to store values of the nodes of a binary tree in order.
