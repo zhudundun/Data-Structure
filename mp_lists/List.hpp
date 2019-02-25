@@ -191,6 +191,15 @@ while(temp!=NULL && temp!=tail_){
 
 }
 
+template <typename T>
+void List<T>::printback(){
+ListNode* i=tail_;
+while(i->data!=head_->data){
+  std::cout<<i->data<<std::endl;
+  i=i->prev;
+}
+}
+
 /**
  * Reverses the current List.
  */
@@ -261,6 +270,8 @@ void List<T>::reverseNth(int n) {
     reverse(startPoint,endPoint);
 
    }
+   while(endPoint->next!=NULL) endPoint=endPoint->next;
+   tail_=endPoint;
 
  }
 
