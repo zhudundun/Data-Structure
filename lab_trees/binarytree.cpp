@@ -1,4 +1,4 @@
-/**
+ /**
  * @file binarytree.cpp
  * Definitions of the binary tree functions you'll be writing for this lab.
  * You'll need to modify this file.
@@ -90,12 +90,12 @@ template <typename T>
 void BinaryTree<T>::mirror(Node* root) const{
   if (root==NULL) return;
   Node* temp;
-  mirror(root->left);
-  mirror(root->right);
+
   temp=root->left;
   root->left=root->right;
   root->right=temp;
-
+  mirror(root->left);
+  mirror(root->right);
 }
 
 
@@ -134,28 +134,28 @@ template <typename T>
 bool BinaryTree<T>::isOrderedIterative(Node* root) const
 {
     // your code here
-    bool orderl=true;
-    bool orderr=true;
-    if (root==NULL) return true;
-    while(root->left!=NULL){
-    if(root->left<root) orderl=true;
-    else {
-      orderl=false;
-      break;
-    }
-      root=root->left;
-  }
-  while(root->right!=NULL){
-    if(root->right>root) orderr=true;
-    else {
-      orderr=false;
-      break;
-    }
-    root=root->right;
-  }
-
-    if(orderl==true && orderr==true) return true;
-    else return false;
+  //   bool orderl=true;
+  //   bool orderr=true;
+  //   if (root==NULL) return true;
+  //   while(root->left!=NULL){
+  //   if(root->left<root) orderl=true;
+  //   else {
+  //     orderl=false;
+  //     break;
+  //   }
+  //     root=root->left;
+  // }
+  // while(root->right!=NULL){
+  //   if(root->right>root) orderr=true;
+  //   else {
+  //     orderr=false;
+  //     break;
+  //   }
+  //   root=root->right;
+  // }
+  //
+  //   if(orderl==true && orderr==true) return true;
+  //   else return false;
 
 
 }
@@ -250,27 +250,26 @@ getPaths( paths,array, index,root);
 template <typename T>
 void BinaryTree<T>::getPaths(std::vector<std::vector<T>>& paths,  T array[], int index,Node* root) const
 {
-    // your code here
-if(root==NULL) return;
-else{
-array[index]=root->elem;
-index++;}
-if(root->left==NULL && root->right==NULL){
-  std::vector<T> store;
+  // your code here
+  if(root==NULL) {
+    return;
+  } else {
+    array[index]=root->elem;
+    index++;
+  }
+  if(root->left==NULL && root->right==NULL){
+    std::vector<T> store;
 
-  for( int i=0;i<index;i++) {
-    store.push_back(array[i]);
+    for( int i=0;i<index;i++) {
+      store.push_back(array[i]);
     }
 
-  paths.push_back(store);
-
-}
-else{
-  getPaths( paths, array,index,root->left);
-  getPaths( paths, array,index,root->right);
-
-}
-index--;
+    paths.push_back(store);
+  } else {
+    getPaths( paths, array,index,root->left);
+    getPaths( paths, array,index,root->right);
+  }
+  index--;
 }
 
 

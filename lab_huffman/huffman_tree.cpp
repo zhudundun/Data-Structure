@@ -86,7 +86,7 @@ HuffmanTree::removeSmallest(queue<TreeNode*>& singleQueue,
      TreeNode* shead=NULL;
 
      TreeNode* mhead=NULL;
-     mergeQueue.front();
+     //mergeQueue.front();
      if (singleQueue.empty() && mergeQueue.empty()) return NULL;
      if(mergeQueue.empty()){
        shead=singleQueue.front();
