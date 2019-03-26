@@ -140,6 +140,7 @@ const BTree<K, V>& BTree<K, V>::operator=(const BTree& rhs)
 {
     if (this != &rhs) {
         clear(root);
+        //new_right->elements.assign(mid_elem_itr+1,child->elements.end());
         root = copy(rhs.root);
     }
     return *this;

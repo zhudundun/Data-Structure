@@ -177,9 +177,9 @@ class BTree
          * </pre>
          * The stars below the bars represent non-null child pointers. Null
          * child pointers are represented by an "N". If there are no children
-         * then "no children" is displayed instead.
+         * then "no children" is displayed instead.git merge --allow-unrelated-histories release/lab_btree -m "Merging initial lab_btree files"
          * @param out The ostream to be written to.
-         * @param n The node to be printed.
+         * @param n The node to be printed.git merge --allow-unrelated-histories release/lab_btree -m "Merging initial lab_btree files"
          * @return The modified ostream.
          */
         inline friend std::ostream& operator<<(std::ostream& out,
@@ -264,7 +264,7 @@ class BTree
 
     /**
      * Inserts a key and value into the BTree. If the key is already in the
-     * tree do nothing.
+     * tree do nothing.git merge --allow-unrelated-histories release/lab_btree -m "Merging initial lab_btree files"
      * @param key The key to insert.
      * @param value The value to insert.
      */
@@ -338,13 +338,35 @@ class BTree
  * the sorted order of elements. If val occurs in elements, then this returns
  * the index of val in elements.
  */
+ template <class T, class C>
+ size_t insertion_idx_helper(const std::vector<T>& elements, int start, int end, const C& val)
+ {
+
+if(start==end-1 && val>elements[start] && val<elements[end]) return end;
+T middle=elements[(start+end)/2];
+if(middle==val) return (start+end)/2;
+if(val>middle) return insertion_idx_helper(elements,(start+end)/2,end,val);
+if(val<middle) return insertion_idx_helper(elements,start,(start+end)/2,val);
+return 0;
+ }
+
+
+
+
 template <class T, class C>
 size_t insertion_idx(const std::vector<T>& elements, const C& val)
 {
     /* TODO Your code goes here! */
+if (elements.size()==0) return 0;
+if(val<elements[0]) return 0;
+if(val==elements[0]) return 0;
+if(val>elements[elements.size()-1]) return elements.size();
+if(val==elements[elements.size()-1]) return elements.size()-1;
+return insertion_idx_helper(elements,0,elements.size()-1,val);
 
-    return 5;
 }
+
+
 
 #include "btree_given.cpp"
 #include "btree.cpp"

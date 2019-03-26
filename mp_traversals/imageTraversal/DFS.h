@@ -6,7 +6,7 @@
 
 #include <iterator>
 #include <cmath>
-#include <list>
+//#include <list>
 #include <stack>
 
 #include "../cs225/PNG.h"
@@ -24,8 +24,8 @@ class DFS : public ImageTraversal {
 public:
   DFS(const PNG & png, const Point & start, double tolerance);
 
-  ImageTraversal::Iterator begin();
-  ImageTraversal::Iterator end();
+  Iterator begin();
+  Iterator end();
 
   void add(const Point & point);
   Point pop();

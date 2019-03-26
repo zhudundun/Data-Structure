@@ -248,7 +248,8 @@ class KDTree
     /** Internal representation, root and size **/
     KDTreeNode *root;
     size_t size;
-
+    vector<Point<Dim>> points;
+    
     /** Helper function for grading */
     int getPrintData(KDTreeNode * subroot) const;
 
@@ -259,6 +260,14 @@ class KDTree
     /**
      * @todo Add your helper functions here.
      */
+     int partiton(vector<Point<Dim>>& Points, int start, int end, int pivotIndex, int dimension);
+     void quickSelect(vector<Point<Dim>>& Points, int start, int end, int k, int dimension);
+     typename KDTree<Dim>::KDTreeNode*    createTree(vector<Point<Dim>>& Points, int start, int end, int dimension);
+     typename KDTree<Dim>::KDTreeNode* copy(const KDTreeNode* subRoot);
+     void clear(KDTreeNode* subRoot);
+     double getDistance(const Point<Dim>& query, const Point<Dim>& currBest)const;
+     bool possibleOtherSide(const Point<Dim>&query,const Point<Dim>&curr,int dimension,double distance);
+     void findNearestNeighborHelper(const Point<Dim>& query, Point<Dim>& currBest,int start ,int end,int dimension ,double& distance,bool& first)const;
 };
 
 #include "kdtree.hpp"

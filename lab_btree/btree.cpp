@@ -4,7 +4,6 @@
  * (insert-only). Designed to take advantage of caching to be faster than
  * standard balanced binary search trees.
  */
-
 /**
  * Finds the value associated with a given key.
  * @param key The key to look up.
@@ -27,8 +26,16 @@ V BTree<K, V>::find(const BTreeNode* subroot, const K& key) const
 {
     /* TODO Finish this function */
 
+
     size_t first_larger_idx = insertion_idx(subroot->elements, key);
 
+    if(!subroot->elements.empty() && first_larger_idx<subroot->elements.size()){
+      DataPair found=subroot->elements[first_larger_idx];
+      if(found.key==key) return found.value;
+
+    }
+if(!subroot->is_leaf) return find(subroot->children[first_larger_idx],key);
+return V();
     /* If first_larger_idx is a valid index and the key there is the key we
      * are looking for, we are done. */
 
@@ -43,7 +50,6 @@ V BTree<K, V>::find(const BTreeNode* subroot, const K& key) const
      * anywhere in the tree and return the default V.
      */
 
-    return V();
 }
 
 /**
@@ -68,11 +74,21 @@ void BTree<K, V>::insert(const K& key, const V& value)
         split_child(new_root, 0);
         root = new_root;
     }
+//       std::cout<<key<<std::endl;
+//
+//     std::cout<<*root<<std::endl;
+//     if(root->children.size()!=0){
+//       std::cout<<*(root->children[0])<<std::endl;
+//       std::cout<<*(root->children[1])<<std::endl;
+// }
+//       std::cout<<std::endl;
+
 }
 
 /**
  * Splits a child node of a BTreeNode. Called if the child became too
  * large.
+
  * @param parent The parent whose child we are trying to split.
  * @param child_idx The index of the child in its parent's children
  * vector.
@@ -115,6 +131,7 @@ void BTree<K, V>::split_child(BTreeNode* parent, size_t child_idx)
     BTreeNode* new_left = child;
     BTreeNode* new_right = new BTreeNode(child->is_leaf, order);
 
+
     /* E.g.
      * | 3 | 6 | 8 |
      * Mid element is at index (3 - 1) / 2 = 1 .
@@ -141,6 +158,25 @@ void BTree<K, V>::split_child(BTreeNode* parent, size_t child_idx)
 
 
     /* TODO Your code goes here! */
+    parent->elements.insert(elem_itr,child->elements[mid_elem_idx]);
+    parent->children.insert(child_itr,new_right);
+// // if(mid_elem_itr==child->elements.begin()) {
+// // //  new_right->elements.assign(child->elements.begin()+1,child->elements.end());
+// //   delete new_left;
+// //   new_left=NULL;
+// // }
+// // else{
+new_right->elements.assign(mid_elem_itr+1,child->elements.end());
+
+    new_left->elements.assign(child->elements.begin(),mid_elem_itr);
+//
+//   // }
+if(!new_left->is_leaf){
+  new_right->children.assign(mid_child_itr,child->children.end());
+
+    new_left->children.assign(child->children.begin(),mid_child_itr);
+}
+//std::cout<<"split"<<std::endl;
 }
 
 /**
@@ -161,8 +197,19 @@ void BTree<K, V>::insert(BTreeNode* subroot, const DataPair& pair)
      * After this call returns we need to check if the child became too large
      * and thus needs to be split to maintain order.
      */
-
+//size_t temp=subroot->elements.size();
     size_t first_larger_idx = insertion_idx(subroot->elements, pair);
 
     /* TODO Your code goes here! */
+    // if(!subroot->elements.empty() && first_larger_idx<subroot->elements.size()){
+    //   if(subroot->elements[first_larger_idx]==pair) return;
+    // }
+    if(first_larger_idx<subroot->elements.size() && pair.key==subroot->elements[first_larger_idx].key) return;
+    if(subroot->is_leaf) subroot->elements.insert(subroot->elements.begin()+first_larger_idx,pair);
+    else
+    {BTreeNode* child=subroot->children[first_larger_idx];
+
+    insert(child,pair);
+    if(child->elements.size()>=order) split_child(subroot, first_larger_idx);
+}
 }

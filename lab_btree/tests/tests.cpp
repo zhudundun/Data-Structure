@@ -36,6 +36,7 @@ template<class K, class V>
 void do_inserts(std::vector<std::pair<K, V>>& data, BTree<K, V>& b) {
     for (auto& key_val : data) {
         b.insert(key_val.first, key_val.second);
+      
     }
 }
 template<class K, class V>
@@ -93,7 +94,7 @@ std::vector<int>* vec_gen(size_t n) {
 
 TEST_CASE("test_btree3_small", "[weight=5][valgrind][timeout=8000]") {
     std::vector<std::pair<int, int>> data = {
-        {1, 5},
+        {1, 5}, //element is at index (2 - 1) / 2 = 0 .s
         {4, 7},
         {5, 43},
         {-43, 3},

@@ -298,8 +298,8 @@ int BinaryTree<T>::sumDistances(Node* root,int height) const
     // your code here
     if (root->left==NULL && root->right==NULL)return height;
 
-    if(root->left==NULL) return height+sumDistances(root->right,height+1);
-    if(root->right==NULL) return height+sumDistances(root->left,height+1);
+    if(root->left==NULL) return sumDistances(root->right,height+1);
+    if(root->right==NULL) return sumDistances(root->left,height+1);
 
-    else return height+sumDistances(root->left,height+1)+sumDistances(root->right,height+1);
+    else return sumDistances(root->left,height+1)+sumDistances(root->right,height+1);
 }
