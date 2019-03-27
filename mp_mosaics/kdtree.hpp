@@ -221,9 +221,8 @@ double KDTree<Dim>::getDistance(const Point<Dim>& query, const Point<Dim>& currB
 // }
 
 template <int Dim>
-typename KDTree<Dim>::KDTreeNode* KDTree<Dim>::forwardtraversal(const Point<Dim>& query, KDTreeNode* subRoot,
-																int d, int & bottom_d, double & Dist, stack<KDTreeNode*> & parents,
-																stack<bool> & direction) const{
+typename KDTree<Dim>::KDTreeNode*  KDTree<Dim>::forwardtraversal(const Point<Dim>& query, KDTreeNode* subRoot,
+  int d, int & bottom_d, double & Dist, stack<KDTreeNode*> & parents,stack<bool> & direction) const{
 	if (query == subRoot->point)
 	{
 		parents.push(subRoot);
