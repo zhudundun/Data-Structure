@@ -14,6 +14,7 @@
 #include <vector>
 #include "util/coloredout.h"
 #include "point.h"
+#include <stack>
 
 using std::vector;
 using std::string;
@@ -248,8 +249,8 @@ class KDTree
     /** Internal representation, root and size **/
     KDTreeNode *root;
     size_t size;
-    vector<Point<Dim>> points;
-    
+    //vector<Point<Dim>> Points;
+
     /** Helper function for grading */
     int getPrintData(KDTreeNode * subroot) const;
 
@@ -260,14 +261,25 @@ class KDTree
     /**
      * @todo Add your helper functions here.
      */
-     int partiton(vector<Point<Dim>>& Points, int start, int end, int pivotIndex, int dimension);
-     void quickSelect(vector<Point<Dim>>& Points, int start, int end, int k, int dimension);
-     typename KDTree<Dim>::KDTreeNode*    createTree(vector<Point<Dim>>& Points, int start, int end, int dimension);
+     int partition(vector<Point<Dim>> & Points,int start, int end, int pivotIndex, int dimension);
+     void quickSelect(vector<Point<Dim>> & Points,int start, int end, int k, int dimension);
+     typename KDTree<Dim>::KDTreeNode *  build(vector<Point<Dim>>& Points,int start, int end, int dimension);
      typename KDTree<Dim>::KDTreeNode* copy(const KDTreeNode* subRoot);
      void clear(KDTreeNode* subRoot);
      double getDistance(const Point<Dim>& query, const Point<Dim>& currBest)const;
-     bool possibleOtherSide(const Point<Dim>&query,const Point<Dim>&curr,int dimension,double distance);
-     void findNearestNeighborHelper(const Point<Dim>& query, Point<Dim>& currBest,int start ,int end,int dimension ,double& distance,bool& first)const;
+     //bool possibleOtherSide(const Point<Dim>&query,const Point<Dim>&curr,int dimension,double distance);
+     //void findNearestNeighborHelper(const Point<Dim>& query, Point<Dim>& currBest,int start ,int end,int dimension ,double& distance,bool& first)const;
+     KDTreeNode* forwardtraversal(const Point<Dim>& query, KDTreeNode* subRoot,
+									int d, int & bottom_d, double & Dist, std::stack<KDTreeNode*> & parents,
+									std::stack<bool> & direction) const;
+    bool hypersphere_check(const Point<Dim>& query, const Point<Dim>& target,
+              							int d, double & Dist) const;
+
+   void backwardtraversal(const Point<Dim>& query, KDTreeNode* subRoot, KDTreeNode* & nearnode,
+							int d, double & Dist, std::stack<KDTreeNode*> & parents, std::stack<bool> & direction) const;
+
+    double NearestNeighbor(const Point<Dim>& query, KDTreeNode* subRoot,
+						KDTreeNode* & nearnode, int d) const;
 };
 
 #include "kdtree.hpp"
