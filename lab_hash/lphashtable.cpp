@@ -3,6 +3,8 @@
  * Implementation of the LPHashTable class.
  */
 #include "lphashtable.h"
+using std::pair;
+using hashes::hash;
 
 template <class K, class V>
 LPHashTable<K, V>::LPHashTable(size_t tsize)
@@ -79,7 +81,14 @@ void LPHashTable<K, V>::insert(K const& key, V const& value)
      * **Do this check *after* increasing elems (but before inserting)!!**
      * Also, don't forget to mark the cell for probing with should_probe!
      */
-
+elems++;
+if(shouldResize()) resizeTable();
+unsigned idx=hash(key,size);
+while(table[idx]!=NULL){
+  idx=(idx+1)%size;
+}
+table[idx] =new pair <K, V> (key,value);
+should_probe[idx]=true;
     (void) key;   // prevent warnings... When you implement this function, remove this line.
     (void) value; // prevent warnings... When you implement this function, remove this line.
 }
@@ -90,18 +99,31 @@ void LPHashTable<K, V>::remove(K const& key)
     /**
      * @todo: implement this function
      */
+     int idx=findIndex(key);
+     if(idx!=-1){
+       delete table[idx];
+       table[idx]=NULL;
+       elems--;
+     }
+
 }
 
 template <class K, class V>
 int LPHashTable<K, V>::findIndex(const K& key) const
 {
-    
+
     /**
      * @todo Implement this function
      *
      * Be careful in determining when the key is not in the table!
      */
-
+     unsigned idx=hash(key,size);
+unsigned start=idx;
+while(should_probe[idx]){
+  if(table[idx]!=NULL && table[idx]->first==key) return idx;
+  idx=(idx+1)%size;
+  if(idx==start) break;
+}
     return -1;
 }
 
@@ -159,4 +181,26 @@ void LPHashTable<K, V>::resizeTable()
      *
      * @hint Use findPrime()!
      */
+     unsigned size2= findPrime(2*size);
+     pair<K, V>** table2=new pair<K, V>*[size2];
+     delete[] should_probe;
+bool* should_probe2=new bool[size2];
+     for(unsigned idx=0; idx<size2;idx++){
+       table2[idx]=NULL;
+       should_probe2[idx]=false;
+     }
+
+     for(unsigned idx=0; idx<size;idx++){
+       if(table[idx]!=NULL){
+         unsigned idx2=hash(table[idx]->first,size2);
+         while(table2[idx2]!=NULL)           idx2=(idx2+1)%size2;
+
+         table2[idx2]=table[idx];
+        should_probe2[idx2]=true;
+       }
+     }
+delete[] table;
+table=table2;
+size=size2;
+should_probe=should_probe2;
 }

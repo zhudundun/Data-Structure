@@ -43,7 +43,7 @@ bool tree_equals_output(stringstream & s, string filename)
     return true;
 }
 
-void compareBinaryFiles( string yourFile, string ourFile ) 
+void compareBinaryFiles( string yourFile, string ourFile )
 {
     ifstream ourBinary( ourFile, ios::binary );
     stringstream ours;
@@ -62,6 +62,7 @@ TEST_CASE("KDTree::testSmallerDimVal Tests", "[weight=1][part=1]") {
   REQUIRE( tree.smallerDimVal(a, b, 0) == true );
   REQUIRE( tree.smallerDimVal(a, b, 2) == false );
   REQUIRE( tree.smallerDimVal(a, b, 1) == true );   // based on operator<
+
 }
 
 TEST_CASE("KDTree::shouldReplace Tests", "[weight=1][part=1]") {
@@ -79,6 +80,8 @@ TEST_CASE("KDTree::shouldReplace Tests", "[weight=1][part=1]") {
   REQUIRE( tree.shouldReplace(target, currentBest1, possibleBest1) == true );
   REQUIRE( tree.shouldReplace(target, currentBest2, possibleBest2) == false );
   REQUIRE( tree.shouldReplace(target, currentBest3, possibleBest3) == false );  // operator<
+
+
 }
 
 
@@ -187,6 +190,7 @@ TEST_CASE("KDTree::findNearestNeighbor (2D), returns correct result", "[weight=1
   compareBinaryFiles(fname, "tests/expected_kdtree_"+to_string(K)+"_"+to_string(size)+".kd" );
 
   REQUIRE( tree.findNearestNeighbor(target) == expected );
+
 }
 
 

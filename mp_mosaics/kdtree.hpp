@@ -226,7 +226,7 @@ typename KDTree<Dim>::KDTreeNode*  KDTree<Dim>::forwardtraversal(const Point<Dim
 	if (query == subRoot->point)
 	{
 		parents.push(subRoot);
-		direction.push(true);
+		direction.push(false);
 		Dist = 0;
 		bottom_d = d;
 		return subRoot;
@@ -261,7 +261,7 @@ typename KDTree<Dim>::KDTreeNode*  KDTree<Dim>::forwardtraversal(const Point<Dim
 
 
 template <int Dim>
-bool KDTree<Dim>::hypersphere_check(const Point<Dim>& query, const Point<Dim>& target,
+bool KDTree<Dim>::hypersphereCheck(const Point<Dim>& query, const Point<Dim>& target,
 									int d, double & Dist) const{
 	Point<Dim> boundary = query;
 	boundary.set(d, target[d]);
@@ -273,20 +273,20 @@ template <int Dim>
 void KDTree<Dim>::backwardtraversal(const Point<Dim>& query, KDTreeNode* subRoot, KDTreeNode* & nearnode,
 									int d, double & Dist, stack<KDTreeNode*> & parents, stack<bool> & direction) const{
 	// current node near query point
-	if (getDistance(query, subRoot->point)<Dist){
+	if (getDistance(query, subRoot->point)<=Dist){
 		Dist = getDistance(query, subRoot->point);
 		nearnode = subRoot;
 	}
-	else if (getDistance(query, subRoot->point)==Dist){
-		if (subRoot->point < nearnode->point)
-			nearnode = subRoot;
-	}
+	// else if (getDistance(query, subRoot->point)==Dist){
+	// 	if (subRoot->point < nearnode->point)
+	// 		nearnode = subRoot;
+	// }
 	// update the stacks
 	bool direction_top = direction.top();
 	parents.pop();
 	direction.pop();
 	// check the child
-	if (hypersphere_check(query, subRoot->point, d, Dist)){
+	if (hypersphereCheck(query, subRoot->point, d, Dist)){
 		if (direction_top==true && subRoot->right!=NULL){
 			KDTreeNode* subnearnode = subRoot;//new KDTreeNode();
 			double subDist = NearestNeighbor(query, subRoot->right, subnearnode, (d+1)%Dim);
@@ -338,8 +338,8 @@ Point<Dim> KDTree<Dim>::findNearestNeighbor(const Point<Dim>& query) const
 {
 	//@todo Implement this function!
 	KDTreeNode* nearnode = root;//new KDTreeNode();
-	double Dist = NearestNeighbor(query, root, nearnode, 0);
-	KDTreeNode* node = nearnode;
+  NearestNeighbor(query, root, nearnode, 0);
+	//KDTreeNode* node = nearnode;
 	return nearnode->point;
 }
 

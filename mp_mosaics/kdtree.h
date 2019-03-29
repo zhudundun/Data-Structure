@@ -272,7 +272,7 @@ class KDTree
      KDTreeNode* forwardtraversal(const Point<Dim>& query, KDTreeNode* subRoot,
 									int d, int & bottom_d, double & Dist, std::stack<KDTreeNode*> & parents,
 									std::stack<bool> & direction) const;
-    bool hypersphere_check(const Point<Dim>& query, const Point<Dim>& target,
+    bool hypersphereCheck(const Point<Dim>& query, const Point<Dim>& target,
               							int d, double & Dist) const;
 
    void backwardtraversal(const Point<Dim>& query, KDTreeNode* subRoot, KDTreeNode* & nearnode,
