@@ -24,8 +24,13 @@ bool canTravel(int x, int y, int dir) const;
 void setWall(int x,int y,int dir, bool exists);
 vector<int> solveMaze();
 PNG* drawMaze()const;
-
 PNG* drawMazeWithSolution();
+
+PNG* drawMaze_creative() ;
+PNG* drawMaze_creative_solution() ;
+pair<int,int> func (int x, int y) const ;
+
+
 
 private:
   vector<bool> downwalls;

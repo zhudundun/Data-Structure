@@ -1,6 +1,6 @@
 /* Your code here! */
 #include"maze.h"
-
+#include <math.h>
 using namespace std;
 
 SquareMaze::SquareMaze(){}
@@ -124,7 +124,7 @@ PNG* SquareMaze::drawMaze()const{
     HSLAPixel& pixel=unsolved->getPixel(0,i);
     pixel.l=0.0;
   }
-  for(int i=0;i<pW;i++){
+  for(int i=10;i<pW;i++){
     HSLAPixel& pixel=unsolved->getPixel(i,0);
     pixel.l=0.0;
   }
@@ -204,4 +204,148 @@ PNG* SquareMaze::drawMazeWithSolution(){
       x+=1;
     }
 return unsolved;
+  }
+
+  pair<int,int> SquareMaze::func (int x, int y) const {
+  	pair<int,int> ret(x,y);
+  	int image_width2 = width*10+1;
+  	int image_height2 = height*10+1;
+  	int image_width = 2*image_width2;
+  	int image_height = 1.5*image_height2;
+  	float pi = 3.1415926;
+
+  	float r = y+image_height2/3;
+  	float degree = 4*image_width2/(2*pi*image_height2);
+  	float degree_left = (pi-degree)/2;
+  	float degree_y = degree_left + 4*x/(2*pi*image_height2);
+  	ret.first = -r*cos(degree_y)+image_width/2;
+  	ret.second = r*sin(degree_y);
+  	return ret;
+  }
+
+
+
+  PNG* SquareMaze::drawMaze_creative(){
+
+	int image_width2 = width*10+1;
+	int image_height2 = height*10+1;
+	int image_width = 2*image_width2;
+	int image_height = 1.5*image_height2;
+	float pi = 3.1415926;
+  vector<vector<vector<bool>>> walls_(image_width);
+
+  for (int i=0; i<image_width; i++) {
+  		walls_[i] = vector<vector<bool>>(image_height);
+  		for (int j=0; j<image_height; j++) {
+  			walls_[i][j] = vector<bool>(2);
+  			//have walls
+  			//0 right 1 down
+  			walls_[i][j][0] = true;
+  			walls_[i][j][1] = true;
+  }
+}
+
+	float r = image_height2/3;
+	PNG* mazeImage = new PNG(image_width, image_height);
+
+	HSLAPixel black(0, 0, 0);
+
+	for (int i = 0; i<image_width; i++) {
+		if ((i<1 || i>9) && i< image_height2) {
+			HSLAPixel & pixel = mazeImage->getPixel(func(i,0).first, func(i,0).second);
+			// pixel.s = black.s;
+			// pixel.h = black.h;
+			pixel.l = black.l;
+		}
+	}
+	for (int i = 0; i<image_height; i++) {
+		if (i< image_height2) {
+			HSLAPixel & pixel = mazeImage->getPixel(func(0,i).first, func(0,i).second);
+			// pixel.s = black.s;
+			// pixel.h = black.h;
+			pixel.l = black.l;
+		}
+	}
+	for (int x=0; x<width; x++) {
+		for (int y=0; y<height; y++) {
+			if (walls_[x][y][0]) {
+				for (int k=0; k<=10; k++) {
+					HSLAPixel & pixel = mazeImage->getPixel(func((x+1)*10,y*10+k).first, func((x+1)*10,y*10+k).second);
+					// pixel.s = black.s;
+					// pixel.h = black.h;
+					pixel.l = black.l;
+				}
+			}
+			if (walls_[x][y][1]) {
+				for (int k=0; k<=10; k++) {
+					HSLAPixel & pixel = mazeImage->getPixel(func(x*10+k,(y+1)*10).first, func(x*10+k,(y+1)*10).second);
+					// pixel.s = black.s;
+					// pixel.h = black.h;
+					pixel.l = black.l;
+				}
+			}
+		}
+	}
+
+	return mazeImage;
+
+
+  }
+
+
+
+  PNG * SquareMaze::drawMaze_creative_solution() {
+  	PNG* mazeImage = drawMaze_creative();
+
+  	HSLAPixel red(0,1,0.5,1);
+
+  	vector<int> path = solveMaze();
+  	int x = 5;
+  	int y = 5;
+  	int i;
+  	for (int iter = 0; iter < (int)path.size(); iter++) {
+  		if (path[iter]==0) {
+  			for (i = 0; i <= 10; i++) {
+  				HSLAPixel & pixel = mazeImage->getPixel(func(x+i,y).first, func(x+i,y).second);
+  				pixel.s = red.s;
+  				pixel.h = red.h;
+  				pixel.l = red.l;
+  			}
+  			x += 10;
+  		}
+  		else if (path[iter]==1) {
+  			for (i = 0; i <= 10; i++) {
+  				HSLAPixel & pixel = mazeImage->getPixel(func(x,y+i).first, func(x,y+i).second);
+  				pixel.s = red.s;
+  				pixel.h = red.h;
+  				pixel.l = red.l;
+  			}
+  			y += 10;
+  		}
+  		else if (path[iter]==2) {
+  			for (i = 0; i <= 10; i++) {
+  				HSLAPixel & pixel = mazeImage->getPixel(func(x-i,y).first, func(x-i,y).second);
+  				pixel.s = red.s;
+  				pixel.h = red.h;
+  				pixel.l = red.l;
+  			}
+  			x -= 10;
+  		}
+  		else if (path[iter]==3) {
+  			for (i = 0; i <= 10; i++) {
+  				HSLAPixel & pixel = mazeImage->getPixel(func(x,y-i).first, func(x,y-i).second);
+  				pixel.s = red.s;
+  				pixel.h = red.h;
+  				pixel.l = red.l;
+  			}
+  			y -= 10;
+  		}
+  	}
+  	x -= 5;
+  	y += 5;
+  	for (i = 1; i < 10; i++) {
+  		HSLAPixel & pixel = mazeImage->getPixel(func(x+i,y).first, func(x+i,y).second);
+  		pixel.l = 1;
+  	}
+  	return mazeImage;
   }
