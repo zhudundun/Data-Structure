@@ -186,14 +186,14 @@ void DHHashTable<K, V>::resizeTable()
 
     for (size_t slot = 0; slot < size; slot++) {
         if (table[slot] != NULL) {
-            size_t h = hashes::hash(table[slot]->first, newSize);
+            size_t idx = hashes::hash(table[slot]->first, newSize);
             size_t jump = hashes::secondary_hash(table[slot]->first, newSize);
-            size_t i = 0;
-            size_t idx = h;
+            //size_t i = 0;
+            //size_t idx = h;
             while (temp[idx] != NULL)
             {
-                ++i;
-                idx = (h + jump*i) % newSize;
+                //++i;
+                idx = (idx + jump) % newSize;
             }
             temp[idx] = table[slot];
             should_probe[idx] = true;

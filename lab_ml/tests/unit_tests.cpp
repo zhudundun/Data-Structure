@@ -57,7 +57,7 @@ TEST_CASE("NimLearner(3) constructor creates the correct edges", "[weight=1][par
   if (g.vertexExists("p1-2")) {
     REQUIRE(g.edgeExists("p1-2", "p2-1"));
     REQUIRE(g.edgeExists("p1-2", "p2-0"));
-  }  
+  }
 }
 
 
@@ -66,6 +66,7 @@ TEST_CASE("NimLearner(1) plays a trivial random game", "[weight=1][part=2]") {
 
   std::vector<Edge> path = nim.playRandomGame();
   REQUIRE( path.size() == 1 );
+
 }
 
 TEST_CASE("NimLearner(10) plays random game", "[weight=1][part=2]") {
@@ -165,4 +166,3 @@ TEST_CASE("NimLearner(4) has ending edge weights summing to the random games pla
            g.getEdgeWeight( p2_2, p1_0 ) +
            g.getEdgeWeight( p2_1, p1_0 ) == 10000 );
 }
-

@@ -47,8 +47,10 @@ int DisjointSets::find(int elem) {
 void DisjointSets::setunion(int a, int b) {
 	int root1 = find(a);
 	int root2 = find(b);
-	int size1 = -1*elements[root1];
-	int size2 = -1*elements[root2];
+	//int size1 = -1*elements[root1];
+	//int size2 = -1*elements[root2];
+	int size1 = size(a);
+	int size2 = size(b);
 	int newsize = size1 + size2;
 	if (size1 > size2)
 	{
