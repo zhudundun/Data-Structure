@@ -29,6 +29,11 @@ unsigned int Graph<V,E>::degree(const std::string key) const {
 */
 template <class V, class E>
 void Graph<V,E>::removeVertex(const V & v) {
+
+
+
+
+
   return removeVertex(v.key());
 }
 

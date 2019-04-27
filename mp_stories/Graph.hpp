@@ -11,7 +11,7 @@
 template <class V, class E>
 unsigned int Graph<V,E>::numVertices() const {
   // TODO: Part 2
-  return 0;
+  return vertexMap.size();
 }
 
 
@@ -23,7 +23,8 @@ unsigned int Graph<V,E>::numVertices() const {
 template <class V, class E>
 unsigned int Graph<V,E>::degree(const V & v) const {
   // TODO: Part 2
-  return 0;
+
+  return adjList.at(v.key()).size();
 }
 
 
@@ -35,8 +36,16 @@ unsigned int Graph<V,E>::degree(const V & v) const {
 template <class V, class E>
 V & Graph<V,E>::insertVertex(std::string key) {
   // TODO: Part 2
+
+
+
+
   V & v = *(new V(key));
+  vertexMap.insert({key,v});
+  adjList[key] = std::list<edgeListIter>();
+
   return v;
+
 }
 
 
@@ -47,6 +56,12 @@ V & Graph<V,E>::insertVertex(std::string key) {
 template <class V, class E>
 void Graph<V,E>::removeVertex(const std::string & key) {
   // TODO: Part 2
+  if (vertexMap.find(key) != vertexMap.end())
+   {
+           vertexMap.erase(key);
+           adjList.erase(key);
+   }
+
 }
 
 
@@ -59,9 +74,28 @@ void Graph<V,E>::removeVertex(const std::string & key) {
 template <class V, class E>
 E & Graph<V,E>::insertEdge(const V & v1, const V & v2) {
   // TODO: Part 2
-  E & e = *(new E(v1, v2));
-
-  return e;
+E & e = *(new E(v1, v2));
+edgeList.push_front(e);
+string key1=v1.key();
+string key2=v2.key();
+// if(e.directed()){
+adjList.at(key1).push_front(edgeList.begin());
+adjList.at(key2).push_front(edgeList.begin());
+// }
+// else{
+//    for (auto it = adjList.at(key1).begin(); it != adjList.at(key1).end(); it++){
+//     if(e==**it) break;
+//     adjList.at(key1).push_front(edgeList.begin());
+//
+//   }
+//   for (auto it = adjList.at(key2).begin(); it != adjList.at(key2).end(); it++){
+//     if(e==**it) break;
+//     adjList.at(key2).push_front(edgeList.begin());
+//
+//   }
+//
+// }
+ return e;
 }
 
 
@@ -72,8 +106,29 @@ E & Graph<V,E>::insertEdge(const V & v1, const V & v2) {
 * @param key2 The key of the destination Vertex
 */
 template <class V, class E>
-void Graph<V,E>::removeEdge(const std::string key1, const std::string key2) {  
+void Graph<V,E>::removeEdge(const std::string key1, const std::string key2) {
   // TODO: Part 2
+  if(adjList.find(key1)!= adjList.end()){
+    for (auto it = adjList.at(key1).begin(); it != adjList.at(key1).end(); it++){
+      E edge=**it;
+
+      if(edge.directed()){
+        if(edge.source()==key1 && edge.dest()==key2) {
+         //  edgeList.erase(*it);
+         // adjList.at(key1).erase(it);
+         this->removeEdge(*it);
+
+      }}
+     else{
+       if(edge.source()==key2 || edge.dest()==key2) {
+         // edgeList.erase(*it);
+         // adjList.at(key1).erase(it);
+         this->removeEdge(*it);
+
+
+     }}
+    }
+  }
 }
 
 
@@ -85,6 +140,19 @@ void Graph<V,E>::removeEdge(const std::string key1, const std::string key2) {
 template <class V, class E>
 void Graph<V,E>::removeEdge(const edgeListIter & it) {
   // TODO: Part 2
+  E edge=*it;
+  V vertex1=edge.source();
+  V vertex2=edge.dest();
+
+  edgeList.erase(it);
+  for(auto j = adjList.at(vertex1.key()).begin(); j != adjList.at(vertex1.key()).end(); j++){
+    if(edge==**j) adjList.at(vertex1.key()).erase(j);
+  }
+
+  for(auto j = adjList.at(vertex2.key()).begin(); j != adjList.at(vertex2.key()).end(); j++){
+    if(edge==**j) adjList.at(vertex2.key()).erase(j);
+  }
+
 }
 
 
@@ -94,10 +162,13 @@ void Graph<V,E>::removeEdge(const edgeListIter & it) {
 * @param key The key of the given vertex
 * @return The list edges (by reference) that are adjacent to the given vertex
 */
-template <class V, class E>  
+template <class V, class E>
 const std::list<std::reference_wrapper<E>> Graph<V,E>::incidentEdges(const std::string key) const {
   // TODO: Part 2
   std::list<std::reference_wrapper<E>> edges;
+for(auto it = adjList.at(key).begin(); it != adjList.at(key).end(); it++){
+  edges.push_back(**it);
+}
   return edges;
 }
 
@@ -112,5 +183,16 @@ const std::list<std::reference_wrapper<E>> Graph<V,E>::incidentEdges(const std::
 template <class V, class E>
 bool Graph<V,E>::isAdjacent(const std::string key1, const std::string key2) const {
   // TODO: Part 2
+  for(auto it = adjList.at(key1).begin(); it != adjList.at(key1).end(); it++){
+    E edge=**it;
+    Vertex vertex1=edge.source();
+    Vertex vertex2=edge.dest();
+if(edge.directed()){
+  if(key1==vertex1.key() && key2==vertex2.key()) return true;
+}
+else{
+  if(key2==vertex1.key() || key2==vertex2.key()) return true;
+}
+}
   return false;
 }
