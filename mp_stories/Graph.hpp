@@ -59,7 +59,14 @@ void Graph<V,E>::removeVertex(const std::string & key) {
   if (vertexMap.find(key) != vertexMap.end())
    {
            vertexMap.erase(key);
+           //std::list<std::reference_wrapper<E>> edges;
+
+           //edges=incidentEdges(key);
+           for(auto j = adjList.at(key).begin(); j != adjList.at(key).end(); j++){
+             removeEdge(*j);
+           }
            adjList.erase(key);
+
    }
 
 }
