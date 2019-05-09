@@ -182,10 +182,8 @@ bool BinaryTree<T>::isOrderedRecursive(Node* root) const
     // your code here
     if(root==NULL) return true;// your code here
     if(root->left==NULL && root->right==NULL) return true;// your code here
-    bool result=isOrderedRecursive(root->left) && isOrderedRecursive(root->right);
     // std::cout << "roooot: " << root->elem << std::endl;
     // std::cout << "Cur bool: " << result << std::endl;
-    if (result==false) return result;
     if(root->left==NULL){
     if(root->elem<Min(root->right)) return true;
     else return false;
@@ -196,12 +194,17 @@ bool BinaryTree<T>::isOrderedRecursive(Node* root) const
     // std::cout << "Max: " << Max(root->left) << std::endl;
   if(root->elem>Max(root->left)) return true;
   else return false;
+  //if (result==false)
+
 }
 
 // std::cout << "roooot 3: " << root->elem << std::endl;
 //   std::cout << "Min: " << Min(root->right) << std::endl;
   if(root->elem>Max(root->left)&&root->elem<Min(root->right)) return true;
   else return false;
+  bool result=isOrderedRecursive(root->left) && isOrderedRecursive(root->right);
+  return result;
+
 
 }
 
@@ -265,11 +268,12 @@ void BinaryTree<T>::getPaths(std::vector<std::vector<T>>& paths,  T array[], int
     }
 
     paths.push_back(store);
+    index--;
+
   } else {
     getPaths( paths, array,index,root->left);
     getPaths( paths, array,index,root->right);
   }
-  index--;
 }
 
 

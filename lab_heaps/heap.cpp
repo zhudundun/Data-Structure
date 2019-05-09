@@ -10,7 +10,7 @@ template <class T, class Compare>
 size_t heap<T, Compare>::root() const
 {
     // @TODO Update to return the index you are choosing to be your root.
-    return 0;
+    return 1;
 }
 
 template <class T, class Compare>
@@ -18,28 +18,28 @@ size_t heap<T, Compare>::leftChild(size_t currentIdx) const
 {
     // @TODO Update to return the index of the left child.
 
-    return 2*currentIdx+1;
+    return 2*currentIdx;
 }
 
 template <class T, class Compare>
 size_t heap<T, Compare>::rightChild(size_t currentIdx) const
 {
     // @TODO Update to return the index of the right child.
-    return 2*currentIdx+2;
+    return 2*currentIdx+1;
 }
 
 template <class T, class Compare>
 size_t heap<T, Compare>::parent(size_t currentIdx) const
 {
     // @TODO Update to return the index of the parent.
-    return (currentIdx-1)/2;
+    return currentIdx/2;
 }
 
 template <class T, class Compare>
 bool heap<T, Compare>::hasAChild(size_t currentIdx) const
 {
     // @TODO Update to return whether the given node has a child
-    if(2*currentIdx+1 <_elems.size()) return true;
+    if(2*currentIdx<_elems.size()) return true;
     return false;
 }
 
@@ -48,7 +48,7 @@ size_t heap<T, Compare>::maxPriorityChild(size_t currentIdx) const
 {
     // @TODO Update to return the index of the child with highest priority
     ///   as defined by higherPriority()
-    if(2*currentIdx+1 ==_elems.size()-1) return 2*currentIdx+1;
+    if(2*currentIdx ==_elems.size()-1) return 2*currentIdx;
     if(_elems[leftChild(currentIdx)]<_elems[rightChild(currentIdx)]) return leftChild(currentIdx);
     return rightChild(currentIdx);
 }
@@ -85,16 +85,16 @@ heap<T, Compare>::heap()
     // @TODO Depending on your implementation, this function may or may
     ///   not need modifying
 
-    //T inf = std::numeric_limits<T>::min();
-    //_elems.push_back(inf);
+    T inf = std::numeric_limits<T>::min();
+    _elems.push_back(inf);
 }
 
 template <class T, class Compare>
 heap<T, Compare>::heap(const std::vector<T>& elems)
 {
     // @TODO Construct a heap using the buildHeap algorithm
-  //  T inf = std::numeric_limits<T>::min();
-    //_elems.push_back(inf);
+  T inf = std::numeric_limits<T>::min();
+    _elems.push_back(inf);
     _elems.insert(_elems.end(), elems.begin(), elems.end());
     for (size_t i = _elems.size()-1; i > 0; i--) heapifyDown(i);
 
@@ -144,7 +144,7 @@ template <class T, class Compare>
 bool heap<T, Compare>::empty() const
 {
     // @TODO Determine if the heap is empty
-    return  (_elems.size() < 1);
+    return  (_elems.size() < =1);
 
 }
 

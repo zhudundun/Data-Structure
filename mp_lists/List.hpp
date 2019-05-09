@@ -194,7 +194,7 @@ while(temp!=NULL && temp!=tail_){
 template <typename T>
 void List<T>::printback(){
 ListNode* i=tail_;
-while(i->data!=head_->data){
+while(i!=head_){
   std::cout<<i->data<<std::endl;
   i=i->prev;
 }
@@ -293,10 +293,10 @@ void List<T>::mergeWith(List<T> & otherList) {
     tail_ = head_;
 
     // make sure there is a node in the new list
-    if (tail_ != NULL) {
+    //if (tail_ != NULL) {
         while (tail_->next != NULL)
             tail_ = tail_->next;
-    }
+  //  }
     length_ = length_ + otherList.length_;
 
     // empty out the parameter list

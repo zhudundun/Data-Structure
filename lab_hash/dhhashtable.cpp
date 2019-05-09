@@ -148,7 +148,7 @@ V& DHHashTable<K, V>::operator[](K const& key)
     if (idx == -1) {
         // otherwise, insert the default value and return it
         insert(key, V());
-        idx = findIndex(key);
+        //idx = findIndex(key);
     }
     return table[idx]->second;
 }
